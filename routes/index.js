@@ -2,11 +2,9 @@ var express = require('express');
 var router = express.Router();
 var SpotifyWebApi = require('spotify-web-api-node');
 var clientId = 'f4c7d49946c24c209c08d6e26f559e75';
-var redirectUri = 'http://localhost:8080/callback';
 var spotifyApi = new SpotifyWebApi({
 	clientId : clientId,
 	clientSecret : '7cd751a2121c43f0921189e74e420987',
-	redirectUri : redirectUri,
 });
 
 spotifyApi.clientCredentialsGrant()
@@ -97,6 +95,9 @@ router.get('/api/playlist', function(req, res) {
 
 router.get('/login', function(req, res) {
 	var scopes = 'playlist-modify-public';
+	var hostname = req.headers.host;
+	var redirectUri = 'http://' + hostname + '/callback';
+	spotifyApi.setRedirectURI(redirectUri);
 	res.redirect('https://accounts.spotify.com/authorize' + 
 		'?response_type=code' +
 		'&client_id=' + clientId +
@@ -120,17 +121,16 @@ router.post('/create', function(req, res) {
 					console.log('Added tracks to playlist!');
 					res.send('done');
 				}, function(err) {
-					console.log('Something went wrong!', err);
+					console.log('Something went wrong! Add tracks', err);
 				});
 			}, function(err) {
-				console.log('Something went wrong!', err);
+				console.log('Something went wrong! Create playlist', err);
 			});
 		}, function(err) {
-			console.log('Something went wrong!', err);
+			console.log('Something went wrong! Get user', err);
 		});
-		
 	}, function(err) {
-		console.log('Something went wrong!', err);
+		console.log('Something went wrong! Get code', err);
 	});
 });
 
