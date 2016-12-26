@@ -1,0 +1,28 @@
+<div class="row">
+	<div class="col-md-6 col-md-offset-3"><input type="text" ng-model="playlist.title" class="title-input text-center""><span class="glyphicon glyphicon-pencil title-icon"></span></div>
+	<div class="col-md-12">
+		<table class="table table-hover">
+			<thead class="text-uppercase">
+				<tr>
+					<th class="playlist-header"></th>
+					<th class="playlist-header">Song</th>
+					<th class="playlist-header">Artist</th>
+					<th class="playlist-header">Album</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="track in playlist.tracks" class="playlist-song">
+					<td class="playlist-item">
+						<span ng-show="track.preview != null" ng-click="playlist.play(track)" ng-class="{'glyphicon-play-circle': !playlist.isPlaying(track), 'glyphicon-stop': playlist.isPlaying(track)}" class="glyphicon playlist-button"></span>
+					</td>
+					<td class="playlist-item playlist-info">{{track.name}}</td>
+					<td class="playlist-item playlist-info">{{track.artists.join(', ')}}</td>
+					<td class="playlist-item playlist-info">{{track.album}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<div class="row">
+	<div ng-show="playlist.tracks.length > 0" ng-click="playlist.login()" class="col-md-2 col-sm-offset-5 no-select spotify-button"><img src="/images/spotify.png"> Add to Spotify</div>
+</div>

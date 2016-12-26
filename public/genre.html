@@ -1,0 +1,11 @@
+
+<div class="row">
+	<div class="col-md-6 col-md-offset-3"><input type="text" ng-model="genre.search" class="search-bar"
+       placeholder="Search genres"></div>
+</div>
+
+<div class="row">
+	<div class="col-md-12">
+	<div class="genre-item no-select" ng-repeat="item in genre.list | filter:genre.search | orderBy:'name'" ng-click="genre.save(item)" ng-class="{active: genre.isActive(item)}">{{item.name}}</div>
+	</div>
+</div>

@@ -1,0 +1,14 @@
+<div class="row">
+	<div class="col-md-8 col-md-offset-2"><input ng-model="song.search" ng-model-options="{debounce: 500}" type="text" class="search-bar" placeholder="Search tracks">
+		<div ng-show="song.settings.track != null" class="song-selection">Track: {{song.settings.track.name}} - {{song.settings.track.artists.join(', ')}}</div>
+		<div ng-show="song.suggestions.length > 0" class="panel panel-default song-suggestion-container">
+			<div class="song-suggestion" ng-repeat="item in song.suggestions" ng-click="song.save(item)">
+				<img ng-src="{{item.cover}}" class="song-suggestion-artwork"></img>
+				<div class="song-suggestion-info">
+					<div class="song-suggestion-name">{{item.name | limitTo: 36}}{{item.name.length > 36 ? '...' : ''}}</div>
+					<div class="song-suggestion-artists">{{item.artists.join(', ') | limitTo: 36}}{{item.artists.join(', ') > 36 ? '...' : ''}}</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

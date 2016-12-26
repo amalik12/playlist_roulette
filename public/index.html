@@ -1,0 +1,57 @@
+<!doctype html>
+<html ng-app="playlist">
+<head>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
+
+	<title>Playlist Roulette</title>
+	<link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+	<link href="/stylesheets/style.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script><!-- load angular -->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-route.min.js"></script>
+	<script src="/javascripts/core.js"></script>
+	<script src="/javascripts/genre-list.js"></script>
+	<script src="/javascripts/step-list.js"></script>
+	<base href="/" />
+
+</head>
+<body>
+	<div class="container">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div ng-show="step.settings.currentStep.num < 5" class="step" ng-controller="StepController as step">
+					<div class="step-indicator">{{step.settings.currentStep.num}}</div><span class="step-text">{{step.settings.currentStep.text}}</span>
+				</div>
+				<div ng-view></div>
+				<div class="row nav-row" ng-controller="StepController as step">
+					<div class="col-xs-2">
+						<div ng-show="step.settings.currentStep.num > 1 && step.settings.currentStep.num < 6" ng-click='step.previousStep()' class="step-text nav-button text-center text-uppercase">
+							<span class="glyphicon glyphicon-chevron-left"></span>
+							Back
+						</div>
+					</div>
+					<div ng-show="step.settings.currentStep.num < 5">
+						<div class="col-xs-1 col-sm-offset-2 progress-container"><div class="progress-dot" ng-class='{active: step.isActive(1)}'></div></div>
+						<div class="col-xs-1 progress-container"><div class="progress-dot" ng-class='{active: step.isActive(2)}'></div></div>
+						<div class="col-xs-1 progress-container"><div class="progress-dot" ng-class='{active: step.isActive(3)}'></div></div>
+						<div class="col-xs-1 progress-container"><div class="progress-dot" ng-class='{active: step.isActive(4)}'></div></div>
+						<div class="col-xs-2 col-sm-offset-2">
+							<div ng-click='step.nextStep()' class="step-text text-center nav-button text-uppercase">
+								{{step.settings.navRight}}
+								<span class="glyphicon glyphicon-chevron-right"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script src="/javascripts/bootstrap.min.js"></script>
+</html>
