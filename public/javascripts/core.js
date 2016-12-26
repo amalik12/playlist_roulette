@@ -230,6 +230,7 @@ app.config(['$locationProvider', function($locationProvider) {
     });
 
     window.addEventListener('storage', function(e) {
+        console.log('storage changed');
         if (e.key == 'spotify-token') {
             var playlistParams = {
                 token: e.newValue,
