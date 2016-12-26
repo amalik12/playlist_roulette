@@ -191,8 +191,6 @@ app.config(['$locationProvider', function($locationProvider) {
     playlist.title = 'Untitled Playlist';
     playlist.tracks = [];
     playlist.audio = null;
-    localStorage.setItem('spotify-token', null);
-    playlist.token = localStorage.getItem('spotify-token');
 
     var params = {
         purpose: playlist.settings.purpose,
@@ -229,28 +227,30 @@ app.config(['$locationProvider', function($locationProvider) {
         console.log('Error: ' + data);
     });
 
-    window.addEventListener('storage', function(e) {
-        console.log('storage changed');
-        if (e.key == 'spotify-token') {
-            var playlistParams = {
-                token: e.newValue,
-                tracks: playlist.tracks.map(function(x) {
-                    return x.id;
-                }),
-                name: playlist.title
-            }
-            settings.set(playlist.title, 'name');
-            $http.post('/create?' + $httpParamSerializer(playlistParams))
-            .then(function(data) {
-                $location.path(settings.value.currentStep.next);
-            }, function(data) {
-                console.log('Error: ' + data);
-            });;
-        }
-    });
-
     playlist.login = function(){
-        window.open('/login', '_blank', 'location=yes,height=570,width=520,scrollbars=no,status=yes');
+        var child = window.open('/login', '_blank', 'location=yes,height=570,width=520,scrollbars=no,status=yes');
+        var timer = setInterval(checkChild, 500);
+
+        function checkChild() {
+            if (child.closed) {  
+                clearInterval(timer);
+                var playlistParams = {
+                    token: localStorage.getItem('spotify-token'),
+                    tracks: playlist.tracks.map(function(x) {
+                        return x.id;
+                    }),
+                    name: playlist.title
+                }
+                settings.set(playlist.title, 'name');
+                $http.post('/create?' + $httpParamSerializer(playlistParams))
+                .then(function(data) {
+                    $location.path(settings.value.currentStep.next);
+                }, function(data) {
+                    console.log('Error: ' + data);
+                });;
+                localStorage.clear();
+            }
+        }
     }
     playlist.play = function(track){
         if (playlist.audio == null) {
