@@ -169,6 +169,16 @@
 	margin-bottom: 25px;
 }
 
+.song-selection-artwork {
+	width: 60px;
+	margin-left: 8px;
+	margin-right: 8px;
+}
+
+.song-selection{
+	font-size: 20px;
+}
+
 .song-suggestion-container{
 	position: absolute;
 	top: 70px;

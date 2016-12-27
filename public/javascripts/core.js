@@ -169,6 +169,7 @@ app.config(['$locationProvider', function($locationProvider) {
 
     song.save = function(item) {
         settings.set(item, 'track');
+        settings.set('Next', 'navRight');
         song.suggestions = [];
     }
 })
@@ -204,7 +205,7 @@ app.config(['$locationProvider', function($locationProvider) {
     if (playlist.settings.track != null) {
         params.track = playlist.settings.track.id;
     }
-    
+
     $http.get('/api/playlist?' + $httpParamSerializer(params))
     .then(function(data) {
         var results = data.data.tracks;
