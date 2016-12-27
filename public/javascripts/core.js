@@ -191,6 +191,7 @@ app.config(['$locationProvider', function($locationProvider) {
     playlist.title = 'Untitled Playlist';
     playlist.tracks = [];
     playlist.audio = null;
+    playlist.loading = true;
 
     var params = {
         purpose: playlist.settings.purpose,
@@ -203,6 +204,7 @@ app.config(['$locationProvider', function($locationProvider) {
     if (playlist.settings.track != null) {
         params.track = playlist.settings.track.id;
     }
+    
     $http.get('/api/playlist?' + $httpParamSerializer(params))
     .then(function(data) {
         var results = data.data.tracks;
@@ -225,6 +227,9 @@ app.config(['$locationProvider', function($locationProvider) {
         }
     }, function(data) {
         console.log('Error: ' + data);
+    })
+    .finally(function(){
+        playlist.loading = false;
     });
 
     playlist.login = function(){
@@ -234,6 +239,7 @@ app.config(['$locationProvider', function($locationProvider) {
         function checkChild() {
             if (child.closed) {  
                 clearInterval(timer);
+                console.log(localStorage.getItem('spotify-token'));
                 var playlistParams = {
                     token: localStorage.getItem('spotify-token'),
                     tracks: playlist.tracks.map(function(x) {

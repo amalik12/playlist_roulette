@@ -49,7 +49,7 @@ router.get('/api/playlist', function(req, res) {
 		break;
 		case "Study":
 		searchObject.max_energy = 0.7;
-		searchObject.min_instrumentalness = 0.6;
+		searchObject.min_instrumentalness = 0.4;
 		searchObject.min_valence = 0.3;
 		if (req.query.track == undefined && req.query.genre == undefined) {
 			searchObject.seed_genres = ['jazz', 'study'];
