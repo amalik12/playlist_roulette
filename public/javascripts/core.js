@@ -291,7 +291,6 @@ app.config(['$locationProvider', function($locationProvider) {
             return playlist.audio.src == track.preview;
         }
     }
-
 })
 .controller('DoneController', function(settings) {
     var done = this;
