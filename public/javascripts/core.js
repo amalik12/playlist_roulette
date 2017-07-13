@@ -240,22 +240,25 @@ app.config(['$locationProvider', function($locationProvider) {
         function checkChild() {
             if (child.closed) {  
                 clearInterval(timer);
-                console.log(localStorage.getItem('spotify-token'));
-                var playlistParams = {
-                    token: localStorage.getItem('spotify-token'),
-                    tracks: playlist.tracks.map(function(x) {
-                        return x.id;
-                    }),
-                    name: playlist.title
+                var loginToken = localStorage.getItem('spotify-token');
+                if (loginToken != null)
+                {
+                    var playlistParams = {
+                        token: loginToken,
+                        tracks: playlist.tracks.map(function(x) {
+                            return x.id;
+                        }),
+                        name: playlist.title
+                    }
+                    settings.set(playlist.title, 'name');
+                    $http.post('/create?' + $httpParamSerializer(playlistParams))
+                    .then(function(data) {
+                        $location.path(settings.value.currentStep.next);
+                    }, function(data) {
+                        console.log('Error: ' + data);
+                    });
+                    localStorage.clear();
                 }
-                settings.set(playlist.title, 'name');
-                $http.post('/create?' + $httpParamSerializer(playlistParams))
-                .then(function(data) {
-                    $location.path(settings.value.currentStep.next);
-                }, function(data) {
-                    console.log('Error: ' + data);
-                });;
-                localStorage.clear();
             }
         }
     }
@@ -266,10 +269,10 @@ app.config(['$locationProvider', function($locationProvider) {
                 src: track.preview
             }
             playlist.audio.object.addEventListener("ended", function(){
-             playlist.audio.src = null;
-             console.log(playlist.audio.object.ended);
-             console.log(playlist.audio.src == track.preview);
-         });
+               playlist.audio.src = null;
+               console.log(playlist.audio.object.ended);
+               console.log(playlist.audio.src == track.preview);
+           });
             playlist.audio.object.play();
         } else {
             playlist.audio.object.pause();
